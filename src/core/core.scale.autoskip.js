@@ -122,28 +122,28 @@ function skipMajors(ticks, newTicks, majorIndices, spacing) {
  */
 function skip(ticks, newTicks, spacing, majorStart, majorEnd) {
   const start = valueOrDefault(majorStart, 0);
-  const end = Math.min(valueOrDefault(majorEnd, ticks.length), ticks.length);
+  const end = Math.min(valueOrDefault(majorEnd, ticks.length), ticks.length) - 1;
   let count = 0;
   let length, i, next;
 
   spacing = Math.ceil(spacing);
   if (majorEnd) {
-    length = majorEnd - majorStart;
+  length = majorEnd - majorStart;
     spacing = length / Math.floor(length / spacing);
   }
 
-  next = start;
+  next = end;
 
   while (next < 0) {
     count++;
-    next = Math.round(start + count * spacing);
+    next = Math.round(end - count * spacing);
   }
-
-  for (i = Math.max(start, 0); i < end; i++) {
+   
+  for (i = end; i >= Math.max(start, 0); i--) {
     if (i === next) {
       newTicks.push(ticks[i]);
       count++;
-      next = Math.round(start + count * spacing);
+      next = Math.round(end - count * spacing);
     }
   }
 }
